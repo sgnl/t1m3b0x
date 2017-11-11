@@ -11,7 +11,13 @@ Click on it to start the timer:
 
 ![Alt text](docs/pomodoro_ex_002.gif?raw=true "Click to start the timer")
 
-<kbd>Space</kbd> will pause the Timer
+Go do stuff, timer display progress in minimal way.
+
+Text will appear if you wait a second.
+
+![Alt text](docs/pomodoro_ex_003.gif?raw=true "...Time doesn't wait for me... - Dillinger Four, 'Gainsville'")
+
+<kbd>Space</kbd> will pause the Timer.
 
 *Stop the Timer by clicking on it again*
 

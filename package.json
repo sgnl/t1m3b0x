@@ -1,5 +1,20 @@
 {
-  "name": "hello-world",
+  "name": "t1m3b0x",
   "version": "0.1.0",
-  "main": "resources/main.js"
+  "main": "resources/main.js",
+  "scripts": {
+    "build:pre": "lein do clean, cljsbuild once frontend-release, cljsbuild once electron-release",
+    "build:app": "npm run build:packager && npm run build:post:asar && npm run build:clean-up",
+    "build:packager": "electron-packager . t1m3b0x --platform=darwin --arch=x64 --version=1.4.8 --overwrite",
+    "build:post:asar": "asar pack ./t1m3b0x-darwin-x64/t1m3b0x.app/Contents/Resources/app ./t1m3b0x-darwin-x64/t1m3b0x.app/Contents/Resources/app.asar",
+    "build:clean-up": "rimraf ./t1m3b0x-darwin-x64/t1m3b0x.app/Contents/Resources/app"
+  },
+  "dependencies": {
+    "electron-packager": "^9.1.0",
+    "electron-prebuilt": "^1.4.13"
+  },
+  "devDependencies": {
+    "asar": "^0.14.0",
+    "rimraf": "^2.6.2"
+  }
 }

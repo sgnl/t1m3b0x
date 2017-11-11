@@ -7,8 +7,6 @@
     (.alert js/window "ppp"))))
 
 (defn onLoad []
-  ; document.querySelector('.ui').classList.add('toggle-ui-on');
-  (.alert js/window "qqq")
   (turn-on-ui))
 
 (defn init []

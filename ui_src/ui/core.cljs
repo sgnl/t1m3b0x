@@ -52,7 +52,8 @@
                               (when (= @duration interval-duration)
                                 (stop-timer @interval-process)
                                 (swap! timer-is-active not)
-                                (play-sound "complete")))
+                                (play-sound "complete")
+                                (new js/Notification. "t1m3b0x" (js-obj "body" "Interval Complete"))))
                             1000)))
 
 (defn visor

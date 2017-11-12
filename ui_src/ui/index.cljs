@@ -72,6 +72,7 @@
       (when (> @duration @interval_duration)
         (stop-timer)
         (swap! timer_is_active not)
+        (swap! interface_is_locked not)
         (show-notification "t1m3b0x" "interval complete")))
     1000)))
 

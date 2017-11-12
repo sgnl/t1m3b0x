@@ -2,6 +2,8 @@
 # t1m3b0x
 > a minimal "at-a-glance" pomodoro timer with sound alert on completion
 
+> We are Samaurai. The Keyboard Cowboys. - Eugene "The Plague" Belford
+
 ## How to use
 Open the app you will see:
 

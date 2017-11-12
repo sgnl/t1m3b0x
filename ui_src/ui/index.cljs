@@ -18,9 +18,9 @@
 
 (def app-state
   (atom
-    {:duration 1499
+    {:interface_is_locked false
+     :duration 1499
      :interval_process nil
-
      :timer_is_active false
      :timer_is_paused false
      :available_themes ["neon-sky" "only-dreams" "pacific-high", "twitch" "michiko"]}))
@@ -29,6 +29,7 @@
 (def timer_is_active (reagent/cursor app-state [:timer_is_active]))
 (def timer_is_paused (reagent/cursor app-state [:timer_is_paused]))
 (def available_themes (reagent/cursor app-state [:available_themes]))
+(def interface_is_locked (reagent/cursor app-state [:interface_is_locked]))
 
 (.addEventListener js/document
   "keyup"
@@ -74,6 +75,32 @@
         (show-notification "t1m3b0x" "interval complete")))
     1000)))
 
+(defn toggle-interface-interaction
+  []
+  [:div.icn-unlocked
+    {:data-toggle-icon-lock true
+     :class (if (= @interface_is_locked false)
+              "icn-unlocked"
+              "icn-locked")
+     :on-click (fn [e]
+                 (.preventDefault e)
+                 (.stopPropagation e)
+                 (swap! interface_is_locked not)
+                 (if (= @interface_is_locked true)
+                   (do (secretary/dispatch! "/locked"))
+                   (do (secretary/dispatch! "/"))))}])
+
+(defn toggle-timer
+  [e]
+  (.preventDefault e)
+  (if (= @timer_is_active false)
+    (do
+      (start-timer)
+      (reset! timer_is_paused false))
+    (do
+      (stop-timer)))
+  (swap! timer_is_active not))
+
 (defn visor
   []
   [:div.visor
@@ -98,35 +125,34 @@
       [:span (calculate-percentage)]
       [:span.smaller-text "%"]]])
 
+;
+; PARTIALS
+;
+;
 (defn footer-timer
   []
   [:footer
-    [:div.icn-cog
+   [:div.icn-cog
       {:on-click (fn [e]
         (.preventDefault e)
         (.stopPropagation e)
-        (secretary/dispatch! "/config"))}]])
+        (secretary/dispatch! "/locked"))}]
+   [toggle-interface-interaction]])
 
-(defn footer-config
+(defn footer-locked
   []
   [:footer
     [:div.icn-cog
       {:on-click (fn [e]
         (.preventDefault e)
         (.stopPropagation e)
-        (secretary/dispatch! "/"))}]])
+        (secretary/dispatch! "/"))}]
+    [toggle-interface-interaction]])
 
-(defn toggle-timer
-  [e]
-  (.preventDefault e)
-  (if (= @timer_is_active false)
-    (do
-      (start-timer)
-      (reset! timer_is_paused false))
-    (do
-      (stop-timer)))
-  (swap! timer_is_active not))
-
+;
+; LAYOUTS
+;
+;
 (defn ^:export timer
   []
   [:div.root
@@ -139,12 +165,9 @@
     [pomodoro]
     [footer-timer]])
 
-(defn ^:export config
+(defn ^:export locked
   []
   [:div.root
-    ; [:canvas#circle-progress
-    ;  {:width 220
-    ;   :height 220
-    ;   :data-progress-amount (calculate-percentage)}]
+    [visor]
     [pomodoro]
-    [footer-config]])
+    [footer-locked]])

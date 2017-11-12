@@ -9,7 +9,8 @@
 
 (defn init-browser []
   (reset! main-window (browser-window.
-                        (clj->js {
+                        (clj->js {:maxWidth 220
+                                  :maxHeight 220
                                   :width 220
                                   :height 220
                                   :frame false

@@ -2,7 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]
                    [secretary.core :refer [defroute]])
   (:import goog.History)
-  (:require [ui.index :as index :refer [root-component]]
+  (:require [ui.index :as index :refer [timer config]]
             [reagent.core :as reagent :refer [atom]]
             [ui.document-ready :as dom-ready :refer [init]]
             [goog.events :as events]
@@ -30,27 +30,20 @@
   (defroute "/" []
     (swap! app-state assoc :page :timer))
 
-  (defroute "/config/timer" []
+  (defroute "/config" []
     (swap! app-state assoc :page :config))
 
   (hook-browser-navigation!))
 
 (defmulti current-page #(@app-state :page))
 (defmethod current-page :timer []
-  [root-component])
+  [timer])
 (defmethod current-page :config []
-  [:div
-   [:h1 "CONFIGZ Timer"]
-   [:a
-    {:on-click (fn [e]
-                 (.preventDefault e)
-                 (.stopPropagation e)
-                 (secretary/dispatch! "/"))}
-    "< back"]])
+  [config])
 (defmethod current-page :default []
-  [:h1 "DEFAULT PAGE" ])
+  [:h1 "DEFAULT PAGE"])
 
 (app-routes)
 (reagent/render
-[current-page]
-(js/document.querySelector ".app-container"))
+  [current-page]
+  (js/document.querySelector ".app-container"))

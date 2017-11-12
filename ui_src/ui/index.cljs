@@ -10,8 +10,11 @@
   (local-storage
     (atom
       {:interval_duration 1500
-       })))
+       :active_theme_name "neon-sky"
+       })
+    :local-storage))
 (def interval_duration (reagent/cursor local-state [:interval_duration]))
+(def active_theme_name (reagent/cursor local-state [:active_theme_name]))
 
 (def app-state
   (atom
@@ -20,14 +23,12 @@
 
      :timer_is_active false
      :timer_is_paused false
-     :available_themes ["neon-sky" "only-dreams" "pacific-high", "twitch" "michiko"]
-     :active_theme_name ""}))
+     :available_themes ["neon-sky" "only-dreams" "pacific-high", "twitch" "michiko"]}))
 (def duration (reagent/cursor app-state [:duration]))
 (def interval_process (reagent/cursor app-state [:interval_process]))
 (def timer_is_active (reagent/cursor app-state [:timer_is_active]))
 (def timer_is_paused (reagent/cursor app-state [:timer_is_paused]))
 (def available_themes (reagent/cursor app-state [:available_themes]))
-(def active_theme_name (reagent/cursor app-state [:active_theme_name]))
 
 (.addEventListener js/document
   "keyup"
@@ -59,8 +60,7 @@
 (defn stop-timer
   []
   (.clearInterval js/window @interval_process)
-  (reset! duration 0)
-  (swap! active_theme_name #(str "")))
+  (reset! duration 0))
 
 (defn start-timer
   []
@@ -68,10 +68,9 @@
     #(.setInterval js/window (fn []
       (if (= @timer_is_paused false)
         (swap! duration inc))
-      (when (= @duration @interval_duration)
+      (when (> @duration @interval_duration)
         (stop-timer)
         (swap! timer_is_active not)
-        ;(play-sound "complete")
         (show-notification "t1m3b0x" "interval complete")))
     1000)))
 
@@ -88,7 +87,7 @@
 
 (defn pomodoro
   []
-  [:section.pomodoro.ui
+  [:section.ui
     [:h2.time
       [:span (get-minutes @duration)]
       [:span.smaller-text "m "]
@@ -99,14 +98,23 @@
       [:span (calculate-percentage)]
       [:span.smaller-text "%"]]])
 
-(defn footer
+(defn footer-timer
   []
   [:footer
     [:div.icn-cog
       {:on-click (fn [e]
         (.preventDefault e)
         (.stopPropagation e)
-        (secretary/dispatch! "/config/timer"))}]])
+        (secretary/dispatch! "/config"))}]])
+
+(defn footer-config
+  []
+  [:footer
+    [:div.icn-cog
+      {:on-click (fn [e]
+        (.preventDefault e)
+        (.stopPropagation e)
+        (secretary/dispatch! "/"))}]])
 
 (defn toggle-timer
   [e]
@@ -119,7 +127,7 @@
       (stop-timer)))
   (swap! timer_is_active not))
 
-(defn ^:export root-component
+(defn ^:export timer
   []
   [:div.root
     {:on-click toggle-timer}
@@ -129,4 +137,14 @@
     ;   :data-progress-amount (calculate-percentage)}]
     [visor]
     [pomodoro]
-    [footer]])
+    [footer-timer]])
+
+(defn ^:export config
+  []
+  [:div.root
+    ; [:canvas#circle-progress
+    ;  {:width 220
+    ;   :height 220
+    ;   :data-progress-amount (calculate-percentage)}]
+    [pomodoro]
+    [footer-config]])

@@ -23,10 +23,12 @@ text will appear if you wait a second.
 
 <kbd>Space</kbd> will resume the interval.
 
-If you're truly patient, you will get able to config (🚧 WIP)
+You can configure wait or find it (select background, set interval length):
 
-There will be <kbd>Keyboard</kbd> Shortcuts (🚧 PLANNED)
+![Alt text](docs/pomodoro_ex_004.gif?raw=true "configuration demonstration")
 
-The configuration will be more robust (🚧 PLANNED)
+There will be <kbd>Keyboard</kbd> Shortcuts (🚧 PLANNED #2)
 
-Slack Integration (🚧 PLANNED)
+The configuration will be more robust (🚧 PLANNED #1)
+
+Slack Integration (🚧 PLANNED #3)

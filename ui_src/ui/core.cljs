@@ -2,7 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]
                    [secretary.core :refer [defroute]])
   (:import goog.History)
-  (:require [ui.index :as index :refer [timer locked]]
+  (:require [ui.index :as index :refer [timer locked config]]
             [reagent.core :as reagent :refer [atom]]
             [ui.document-ready :as dom-ready :refer [init]]
             [goog.events :as events]
@@ -33,11 +33,16 @@
   (defroute "/locked" []
     (swap! app-state assoc :page :locked))
 
+  (defroute "/config" []
+    (swap! app-state assoc :page :config))
+
   (hook-browser-navigation!))
 
 (defmulti current-page #(@app-state :page))
 (defmethod current-page :timer []
   [timer])
+(defmethod current-page :config []
+  [config])
 (defmethod current-page :locked []
   [locked])
 (defmethod current-page :default []

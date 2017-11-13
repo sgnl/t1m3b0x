@@ -11,10 +11,12 @@
     (atom
       {:interval_duration 1500
        :active_theme_name "neon-sky"
+       :config {:random_background false}
        })
     :local-storage))
 (def interval_duration (reagent/cursor local-state [:interval_duration]))
 (def active_theme_name (reagent/cursor local-state [:active_theme_name]))
+(def random_background (reagent/cursor local-state [:config :random_background]))
 
 (def app-state
   (atom
@@ -23,7 +25,7 @@
      :interval_process nil
      :timer_is_active false
      :timer_is_paused false
-     :available_themes ["neon-sky" "only-dreams" "pacific-high", "twitch" "michiko"]}))
+     :available_themes ["neon-sky" "only-dreams" "pacific-high", "twitch" "michiko" "monte-carlo"]}))
 (def duration (reagent/cursor app-state [:duration]))
 (def interval_process (reagent/cursor app-state [:interval_process]))
 (def timer_is_active (reagent/cursor app-state [:timer_is_active]))
@@ -36,7 +38,6 @@
   (fn [e]
     (when (= (.-code e) "Space")
       (swap! timer_is_paused not))))
-
 
 (defn- str->int [s]
   #(js/parseInt s))
@@ -72,7 +73,8 @@
       (when (> @duration @interval_duration)
         (stop-timer)
         (swap! timer_is_active not)
-        (swap! interface_is_locked not)
+        (when (= @interface_is_locked true)
+          (swap! interface_is_locked not))
         (show-notification "t1m3b0x" "interval complete")))
     1000)))
 
@@ -107,15 +109,40 @@
   [:div.visor
    {:class
       (when (= @timer_is_active true)
-        (if (= @active_theme_name "")
-          (swap! active_theme_name #(rand-nth @available_themes)))
+        (if (or (= @active_theme_name "") (= @random_background true))
+          (swap! active_theme_name
+            #(rand-nth (remove
+              (fn
+                [name]
+                (= name @active_theme_name)) @available_themes))))
+          (reset! random_background false)
         (str "active" " " (str "visor--" @active_theme_name)))
     :style
       {:top (str (calculate-percentage) "%")}}])
 
-(defn pomodoro
+(defn draggable-area
+  []
+  [:div.draggable-area
+   {:class (when (= @interface_is_locked true)
+             "draggable-area-full")
+    :on-click (fn [e]
+                (.preventDefault e)
+                (.stopPropagation e))}])
+
+(defn decrease-interval-duration
+  []
+  (when (> @interval_duration 60)
+    (swap! interval_duration #(- @interval_duration 60))))
+
+(defn increase-interval-duration
+  []
+  (when (< @interval_duration 3600)
+    (swap! interval_duration #(+ @interval_duration 60))))
+
+(defn interval-panel
   []
   [:section.ui
+    [draggable-area]
     [:h2.time
       [:span (get-minutes @duration)]
       [:span.smaller-text "m "]
@@ -125,6 +152,57 @@
     [:h2.percentage
       [:span (calculate-percentage)]
       [:span.smaller-text "%"]]])
+
+(defn config-panel
+  []
+  [:div.config-panel
+    [:div.interval-settings
+      [:div.button.symbol
+        {:on-click
+          (fn [e]
+            (.preventDefault e)
+            (.stopPropagation e)
+            (decrease-interval-duration))}
+        "-"]
+      [:div.label-and-value-group
+       [:p.label "INTERVAL"]
+       [:p.label-value (str (get-minutes @interval_duration) "mins")]]
+      [:div.button.symbol
+        {:on-click
+          (fn [e]
+            (.preventDefault e)
+            (.stopPropagation e)
+            (increase-interval-duration))}
+        "+"]]
+    [:div.button.rng-bg
+      {:on-click
+        (fn [e]
+          (.preventDefault e)
+          (.stopPropagation e)
+          (swap! random_background not))
+       :on-mouseOver
+         (fn [e]
+           (.preventDefault e)
+           (.stopPropagation e)
+           )}
+      "random bg"]
+;    [:div.interval-settings
+;      [:div.button.symbol
+;        {:on-click
+;          (fn [e]
+;            (.preventDefault e)
+;            (.stopPropagation e)
+;            (swap! random_background not))}
+;        "-"]
+;      [:p "break"]
+;      [:div.button.symbol
+;        {:on-click
+;          (fn [e]
+;            (.preventDefault e)
+;            (.stopPropagation e)
+;            (swap! random_background not))}
+;        "+"]]
+    ])
 
 ;
 ; PARTIALS
@@ -137,7 +215,7 @@
       {:on-click (fn [e]
         (.preventDefault e)
         (.stopPropagation e)
-        (secretary/dispatch! "/locked"))}]
+        (secretary/dispatch! "/config"))}]
    [toggle-interface-interaction]])
 
 (defn footer-locked
@@ -163,12 +241,21 @@
     ;   :height 220
     ;   :data-progress-amount (calculate-percentage)}]
     [visor]
-    [pomodoro]
+    [interval-panel]
     [footer-timer]])
 
 (defn ^:export locked
   []
   [:div.root
     [visor]
-    [pomodoro]
+    ;[:h1.panel-name "locked"]
+    [interval-panel]
     [footer-locked]])
+
+(defn ^:export config
+  []
+  [:div.root
+   [visor]
+   ;[:h1.panel-name "config"]
+   [config-panel]
+   [footer-locked]])

@@ -1,0 +1,15 @@
+var process;
+process.hrtime;
+process.platform;
+var require;
+Object.app;
+Object.app.on;
+Object.app.quit;
+Object.BrowserWindow;
+Object.crashReporter;
+Object.crashReporter.start;
+var electron;
+electron.BrowserWindow;
+electron.BrowserWindow.prototype.loadURL;
+electron.BrowserWindow.prototype.on;
+var __dirname;

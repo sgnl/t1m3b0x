@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "asar": "^0.14.0",
+    "electron": "1.7.9",
     "rimraf": "^2.6.2"
   }
 }

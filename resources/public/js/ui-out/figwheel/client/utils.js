@@ -53,8 +53,8 @@ return clojure.string.replace.call(null,goog.basePath,/(.*)goog\//,"$1");
 });
 figwheel.client.utils.create_custom_event = (function figwheel$client$utils$create_custom_event(event_name,data){
 if(cljs.core.not.call(null,goog.userAgent.product.IE)){
-return (new CustomEvent(event_name,(function (){var obj34543 = {"detail":data};
-return obj34543;
+return (new CustomEvent(event_name,(function (){var obj34553 = {"detail":data};
+return obj34553;
 })()));
 } else {
 var event = document.createEvent("CustomEvent");
@@ -90,23 +90,23 @@ return null;
 }
 });
 figwheel.client.utils.log = (function figwheel$client$utils$log(var_args){
-var args34548 = [];
-var len__27787__auto___34554 = arguments.length;
-var i__27788__auto___34555 = (0);
+var args34558 = [];
+var len__27787__auto___34564 = arguments.length;
+var i__27788__auto___34565 = (0);
 while(true){
-if((i__27788__auto___34555 < len__27787__auto___34554)){
-args34548.push((arguments[i__27788__auto___34555]));
+if((i__27788__auto___34565 < len__27787__auto___34564)){
+args34558.push((arguments[i__27788__auto___34565]));
 
-var G__34556 = (i__27788__auto___34555 + (1));
-i__27788__auto___34555 = G__34556;
+var G__34566 = (i__27788__auto___34565 + (1));
+i__27788__auto___34565 = G__34566;
 continue;
 } else {
 }
 break;
 }
 
-var G__34550 = args34548.length;
-switch (G__34550) {
+var G__34560 = args34558.length;
+switch (G__34560) {
 case 1:
 return figwheel.client.utils.log.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -116,7 +116,7 @@ return figwheel.client.utils.log.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args34548.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args34558.length)].join('')));
 
 }
 });
@@ -126,34 +126,34 @@ return figwheel.client.utils.log.call(null,new cljs.core.Keyword(null,"info","in
 });
 
 figwheel.client.utils.log.cljs$core$IFn$_invoke$arity$2 = (function (level,arg){
-var f = (function (){var pred__34551 = cljs.core._EQ_;
-var expr__34552 = (cljs.core.truth_(figwheel.client.utils.html_or_react_native_env_QMARK_.call(null))?level:new cljs.core.Keyword(null,"info","info",-317069002));
-if(cljs.core.truth_(pred__34551.call(null,new cljs.core.Keyword(null,"warn","warn",-436710552),expr__34552))){
-return ((function (pred__34551,expr__34552){
-return (function (p1__34544_SHARP_){
-return console.warn(p1__34544_SHARP_);
+var f = (function (){var pred__34561 = cljs.core._EQ_;
+var expr__34562 = (cljs.core.truth_(figwheel.client.utils.html_or_react_native_env_QMARK_.call(null))?level:new cljs.core.Keyword(null,"info","info",-317069002));
+if(cljs.core.truth_(pred__34561.call(null,new cljs.core.Keyword(null,"warn","warn",-436710552),expr__34562))){
+return ((function (pred__34561,expr__34562){
+return (function (p1__34554_SHARP_){
+return console.warn(p1__34554_SHARP_);
 });
-;})(pred__34551,expr__34552))
+;})(pred__34561,expr__34562))
 } else {
-if(cljs.core.truth_(pred__34551.call(null,new cljs.core.Keyword(null,"debug","debug",-1608172596),expr__34552))){
-return ((function (pred__34551,expr__34552){
-return (function (p1__34545_SHARP_){
-return console.debug(p1__34545_SHARP_);
+if(cljs.core.truth_(pred__34561.call(null,new cljs.core.Keyword(null,"debug","debug",-1608172596),expr__34562))){
+return ((function (pred__34561,expr__34562){
+return (function (p1__34555_SHARP_){
+return console.debug(p1__34555_SHARP_);
 });
-;})(pred__34551,expr__34552))
+;})(pred__34561,expr__34562))
 } else {
-if(cljs.core.truth_(pred__34551.call(null,new cljs.core.Keyword(null,"error","error",-978969032),expr__34552))){
-return ((function (pred__34551,expr__34552){
-return (function (p1__34546_SHARP_){
-return console.error(p1__34546_SHARP_);
+if(cljs.core.truth_(pred__34561.call(null,new cljs.core.Keyword(null,"error","error",-978969032),expr__34562))){
+return ((function (pred__34561,expr__34562){
+return (function (p1__34556_SHARP_){
+return console.error(p1__34556_SHARP_);
 });
-;})(pred__34551,expr__34552))
+;})(pred__34561,expr__34562))
 } else {
-return ((function (pred__34551,expr__34552){
-return (function (p1__34547_SHARP_){
-return console.log(p1__34547_SHARP_);
+return ((function (pred__34561,expr__34562){
+return (function (p1__34557_SHARP_){
+return console.log(p1__34557_SHARP_);
 });
-;})(pred__34551,expr__34552))
+;})(pred__34561,expr__34562))
 }
 }
 }
@@ -163,11 +163,11 @@ return f.call(null,arg);
 
 figwheel.client.utils.log.cljs$lang$maxFixedArity = 2;
 
-figwheel.client.utils.eval_helper = (function figwheel$client$utils$eval_helper(code,p__34558){
-var map__34561 = p__34558;
-var map__34561__$1 = ((((!((map__34561 == null)))?((((map__34561.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__34561.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__34561):map__34561);
-var opts = map__34561__$1;
-var eval_fn = cljs.core.get.call(null,map__34561__$1,new cljs.core.Keyword(null,"eval-fn","eval-fn",-1111644294));
+figwheel.client.utils.eval_helper = (function figwheel$client$utils$eval_helper(code,p__34568){
+var map__34571 = p__34568;
+var map__34571__$1 = ((((!((map__34571 == null)))?((((map__34571.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__34571.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__34571):map__34571);
+var opts = map__34571__$1;
+var eval_fn = cljs.core.get.call(null,map__34571__$1,new cljs.core.Keyword(null,"eval-fn","eval-fn",-1111644294));
 if(cljs.core.truth_(eval_fn)){
 return eval_fn.call(null,code,opts);
 } else {
@@ -190,8 +190,8 @@ figwheel.client.utils.liftContD = (function figwheel$client$utils$liftContD(defe
 return deferred.then((function (val){
 var new_def = (new goog.async.Deferred());
 f.call(null,val,((function (new_def){
-return (function (p1__34563_SHARP_){
-return new_def.callback(p1__34563_SHARP_);
+return (function (p1__34573_SHARP_){
+return new_def.callback(p1__34573_SHARP_);
 });})(new_def))
 );
 
@@ -231,10 +231,10 @@ if(typeof localStorage !== 'undefined'){
 cljs.core.add_watch.call(null,a,new cljs.core.Keyword(null,"sync-local-storage","sync-local-storage",-473590105),((function (a){
 return (function (_,___$1,___$2,n){
 return cljs.core.mapv.call(null,((function (a){
-return (function (p__34564){
-var vec__34565 = p__34564;
-var ky = cljs.core.nth.call(null,vec__34565,(0),null);
-var v = cljs.core.nth.call(null,vec__34565,(1),null);
+return (function (p__34574){
+var vec__34575 = p__34574;
+var ky = cljs.core.nth.call(null,vec__34575,(0),null);
+var v = cljs.core.nth.call(null,vec__34575,(1),null);
 return localStorage.setItem(cljs.core.name.call(null,ky),cljs.core.pr_str.call(null,v));
 });})(a))
 ,n);
@@ -254,23 +254,23 @@ figwheel.client.utils.persistent_config_set_BANG_ = (function figwheel$client$ut
 return cljs.core.swap_BANG_.call(null,figwheel.client.utils.local_persistent_config,cljs.core.assoc,ky,v);
 });
 figwheel.client.utils.persistent_config_get = (function figwheel$client$utils$persistent_config_get(var_args){
-var args34568 = [];
-var len__27787__auto___34571 = arguments.length;
-var i__27788__auto___34572 = (0);
+var args34578 = [];
+var len__27787__auto___34581 = arguments.length;
+var i__27788__auto___34582 = (0);
 while(true){
-if((i__27788__auto___34572 < len__27787__auto___34571)){
-args34568.push((arguments[i__27788__auto___34572]));
+if((i__27788__auto___34582 < len__27787__auto___34581)){
+args34578.push((arguments[i__27788__auto___34582]));
 
-var G__34573 = (i__27788__auto___34572 + (1));
-i__27788__auto___34572 = G__34573;
+var G__34583 = (i__27788__auto___34582 + (1));
+i__27788__auto___34582 = G__34583;
 continue;
 } else {
 }
 break;
 }
 
-var G__34570 = args34568.length;
-switch (G__34570) {
+var G__34580 = args34578.length;
+switch (G__34580) {
 case 2:
 return figwheel.client.utils.persistent_config_get.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -280,7 +280,7 @@ return figwheel.client.utils.persistent_config_get.cljs$core$IFn$_invoke$arity$1
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args34568.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args34578.length)].join('')));
 
 }
 });

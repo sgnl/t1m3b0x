@@ -186,6 +186,13 @@
            (.stopPropagation e)
            )}
       "random bg"]
+    [:div.volume
+     [:span.button.icn-bullhorn]
+     [:input.bullhorn-slider
+      {:type "range"
+       :min 0
+       :max 100
+       :value 50}]]
 ;    [:div.interval-settings
 ;      [:div.button.symbol
 ;        {:on-click
@@ -225,6 +232,16 @@
       {:on-click (fn [e]
         (.preventDefault e)
         (.stopPropagation e)
+        (secretary/dispatch! "/config"))}]
+    [toggle-interface-interaction]])
+
+(defn footer-config
+  []
+  [:footer
+    [:div.icn-chevron-left
+      {:on-click (fn [e]
+        (.preventDefault e)
+        (.stopPropagation e)
         (secretary/dispatch! "/"))}]
     [toggle-interface-interaction]])
 
@@ -258,4 +275,4 @@
    [visor]
    ;[:h1.panel-name "config"]
    [config-panel]
-   [footer-locked]])
+   [footer-config]])

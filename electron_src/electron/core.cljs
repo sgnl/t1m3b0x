@@ -14,7 +14,7 @@
                                   :width 220
                                   :height 220
                                   :frame false
-                                  :alwaysOnTop false
+                                  :alwaysOnTop true
                                   :resizable true})))
   ; Path is relative to the compiled js file (main.js in our case)
   (.loadURL ^js/electron.BrowserWindow @main-window (str "file://" js/__dirname "/public/index.html"))

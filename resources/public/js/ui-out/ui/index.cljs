@@ -25,7 +25,7 @@
 (def app-state
   (atom
     {:interface_is_locked false
-     :duration 1499
+     :duration 0
      :interval_process nil
      :timer_is_active false
      :timer_is_paused false

@@ -11,7 +11,7 @@ ui.index.active_theme_name = reagent.core.cursor.call(null,ui.index.local_state,
 ui.index.random_background = reagent.core.cursor.call(null,ui.index.local_state,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"random_background","random_background",1650571047)], null));
 ui.index.sound_alert_path = reagent.core.cursor.call(null,ui.index.local_state,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"sound_alert_path","sound_alert_path",887070191)], null));
 ui.index.sound_alert_volume = reagent.core.cursor.call(null,ui.index.local_state,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"sound_alert_volume","sound_alert_volume",1070366738)], null));
-ui.index.app_state = reagent.core.atom.call(null,new cljs.core.PersistentArrayMap(null, 6, [new cljs.core.Keyword(null,"interface_is_locked","interface_is_locked",834729398),false,new cljs.core.Keyword(null,"duration","duration",1444101068),(1499),new cljs.core.Keyword(null,"interval_process","interval_process",1212041319),null,new cljs.core.Keyword(null,"timer_is_active","timer_is_active",-883692270),false,new cljs.core.Keyword(null,"timer_is_paused","timer_is_paused",-1559119412),false,new cljs.core.Keyword(null,"available_themes","available_themes",1891473851),new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, ["neon-sky","only-dreams","pacific-high","twitch","michiko","monte-carlo"], null)], null));
+ui.index.app_state = reagent.core.atom.call(null,new cljs.core.PersistentArrayMap(null, 6, [new cljs.core.Keyword(null,"interface_is_locked","interface_is_locked",834729398),false,new cljs.core.Keyword(null,"duration","duration",1444101068),(0),new cljs.core.Keyword(null,"interval_process","interval_process",1212041319),null,new cljs.core.Keyword(null,"timer_is_active","timer_is_active",-883692270),false,new cljs.core.Keyword(null,"timer_is_paused","timer_is_paused",-1559119412),false,new cljs.core.Keyword(null,"available_themes","available_themes",1891473851),new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, ["neon-sky","only-dreams","pacific-high","twitch","michiko","monte-carlo"], null)], null));
 ui.index.duration = reagent.core.cursor.call(null,ui.index.app_state,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"duration","duration",1444101068)], null));
 ui.index.interval_process = reagent.core.cursor.call(null,ui.index.app_state,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"interval_process","interval_process",1212041319)], null));
 ui.index.timer_is_active = reagent.core.cursor.call(null,ui.index.app_state,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"timer_is_active","timer_is_active",-883692270)], null));
@@ -51,8 +51,8 @@ return alert("SOMETHING!");
 }
 });
 ui.index.show_notification = (function ui$index$show_notification(title,message_body){
-(new Notification(title,(function (){var obj32897 = {"body":message_body};
-return obj32897;
+(new Notification(title,(function (){var obj32945 = {"body":message_body};
+return obj32945;
 })()));
 
 return window.setTimeout((function (e){

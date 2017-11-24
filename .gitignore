@@ -1,4 +1,5 @@
-t1m3b0x-darwin-x64/
+t1m3b0x-darwin-*/
+t1m3b0x-linux-*/
 
 target/
 

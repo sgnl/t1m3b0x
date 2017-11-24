@@ -4,8 +4,9 @@
   "main": "resources/main.js",
   "scripts": {
     "build:pre": "lein do clean, cljsbuild once frontend-release, cljsbuild once electron-release",
-    "build:app": "npm run build:packager && npm run build:post:asar && npm run build:clean-up",
+    "build:app:darwin": "npm run build:packager && npm run build:post:asar && npm run build:clean-up",
     "build:packager": "electron-packager . t1m3b0x --platform=darwin --arch=x64 --version=1.4.8 --overwrite",
+    "build:packager:all": "electron-packager . t1m3b0x --platform=linux --arch=x64 --version=1.4.8 --overwrite",
     "build:post:asar": "asar pack ./t1m3b0x-darwin-x64/t1m3b0x.app/Contents/Resources/app ./t1m3b0x-darwin-x64/t1m3b0x.app/Contents/Resources/app.asar",
     "build:clean-up": "rimraf ./t1m3b0x-darwin-x64/t1m3b0x.app/Contents/Resources/app"
   },

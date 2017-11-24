@@ -13,17 +13,19 @@
        :active_theme_name "neon-sky"
        :random_background false
        :sound_alert_path "audio/lick_my_balls.wav"
+       :sound_alert_volume 0.5
        })
     :local-storage))
 (def interval_duration (reagent/cursor local-state [:interval_duration]))
 (def active_theme_name (reagent/cursor local-state [:active_theme_name]))
 (def random_background (reagent/cursor local-state [:random_background]))
 (def sound_alert_path (reagent/cursor local-state [:sound_alert_path]))
+(def sound_alert_volume (reagent/cursor local-state [:sound_alert_volume]))
 
 (def app-state
   (atom
     {:interface_is_locked false
-     :duration 1495
+     :duration 1499
      :interval_process nil
      :timer_is_active false
      :timer_is_paused false
@@ -53,7 +55,7 @@
   [type]
   (cond
     (= type "complete") (let [audio-file (js/Audio. @sound_alert_path)]
-                          (set! (.-volume audio-file) 0.1)
+                          (set! (.-volume audio-file) @sound_alert_volume)
                           (.play audio-file))
     :else (js/alert "SOMETHING!")))
 
@@ -204,13 +206,14 @@
      [:input.bullhorn-slider
       {:type "range"
        :min 0
-       :max 100
-       :value 50
+       :max 10
+       :value (* @sound_alert_volume 10)
        :on-change
          (fn [e]
            (.preventDefault e)
            (.stopPropagation e)
-           (.log js/console "slider changed"))}]]
+           (reset! sound_alert_volume (/ (.-value (.-target e)) 10))
+           )}]]
 ;    [:div.interval-settings
 ;      [:div.button.symbol
 ;        {:on-click

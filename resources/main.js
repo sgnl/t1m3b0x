@@ -21811,7 +21811,7 @@ electron.core.crash_reporter = electron.core.electron.crashReporter;
 electron.core.main_window = cljs.core.atom.call(null, null);
 electron.core.init_browser = function() {
   cljs.core.reset_BANG_.call(null, electron.core.main_window, new electron.core.browser_window(cljs.core.clj__GT_js.call(null, new cljs.core.PersistentArrayMap(null, 7, [new cljs.core.Keyword(null, "minWidth", "minWidth", -204293526), 220, new cljs.core.Keyword(null, "minHeight", "minHeight", -1635998980), 220, new cljs.core.Keyword(null, "width", "width", -384071477), 220, new cljs.core.Keyword(null, "height", "height", 1025178622), 220, new cljs.core.Keyword(null, "frame", "frame", -1711082588), 
-  !1, new cljs.core.Keyword(null, "alwaysOnTop", "alwaysOnTop", -796802727), !0, new cljs.core.Keyword(null, "resizable", "resizable", -2107060206), !0], null))));
+  !1, new cljs.core.Keyword(null, "alwaysOnTop", "alwaysOnTop", -796802727), !1, new cljs.core.Keyword(null, "resizable", "resizable", -2107060206), !0], null))));
   cljs.core.deref.call(null, electron.core.main_window).loadURL([cljs.core.str.cljs$core$IFn$_invoke$arity$1("file://"), cljs.core.str.cljs$core$IFn$_invoke$arity$1(__dirname), cljs.core.str.cljs$core$IFn$_invoke$arity$1("/public/index.html")].join(""));
   return cljs.core.deref.call(null, electron.core.main_window).on("closed", function() {
     return cljs.core.reset_BANG_.call(null, electron.core.main_window, null);

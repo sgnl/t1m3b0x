@@ -11,17 +11,19 @@
     (atom
       {:interval_duration 1500
        :active_theme_name "neon-sky"
-       :config {:random_background false}
+       :random_background false
+       :sound_alert_path "audio/lick_my_balls.wav"
        })
     :local-storage))
 (def interval_duration (reagent/cursor local-state [:interval_duration]))
 (def active_theme_name (reagent/cursor local-state [:active_theme_name]))
-(def random_background (reagent/cursor local-state [:config :random_background]))
+(def random_background (reagent/cursor local-state [:random_background]))
+(def sound_alert_path (reagent/cursor local-state [:sound_alert_path]))
 
 (def app-state
   (atom
     {:interface_is_locked false
-     :duration 0
+     :duration 1495
      :interval_process nil
      :timer_is_active false
      :timer_is_paused false
@@ -50,14 +52,16 @@
 (defn play-sound
   [type]
   (cond
-    (= type "complete") (let [audio-file (js/Audio. "audio/lick_my_balls.wav")]
+    (= type "complete") (let [audio-file (js/Audio. @sound_alert_path)]
                           (set! (.-volume audio-file) 0.1)
                           (.play audio-file))
     :else (js/alert "SOMETHING!")))
 
 (defn show-notification
   [title message-body]
-  (new js/Notification. title (js-obj "body" message-body)))
+  (new js/Notification. title (js-obj "body" message-body))
+  (.setTimeout js/window (fn [e]
+                          (play-sound "complete")) 500))
 
 (defn stop-timer
   []
@@ -187,12 +191,26 @@
            )}
       "random bg"]
     [:div.volume
-     [:span.button.icn-bullhorn]
+     [:label.button.icn-bullhorn
+      [:input.input-alert-file
+      {:type "file"
+       :accept "audio/*"
+       :on-change
+         (fn [e]
+           (.preventDefault e)
+           (.stopPropagation e)
+           (reset! sound_alert_path (.-path (aget (.-files (.-target e)) "0")))
+           )}]]
      [:input.bullhorn-slider
       {:type "range"
        :min 0
        :max 100
-       :value 50}]]
+       :value 50
+       :on-change
+         (fn [e]
+           (.preventDefault e)
+           (.stopPropagation e)
+           (.log js/console "slider changed"))}]]
 ;    [:div.interval-settings
 ;      [:div.button.symbol
 ;        {:on-click

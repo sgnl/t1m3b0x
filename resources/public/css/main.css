@@ -313,12 +313,19 @@ body, h1, h2, h3, p {
   background-size: 20px;
 }
 
+.input-alert-file {
+  position: absolute;
+  visibility: hidden;
+  left: -200px;
+}
+
 .bullhorn-slider {
   width: 65%;
 }
 
 .icn-cog.toggle-ui-on,
 .icn-unlocked.toggle-ui-on,
+.icn-chevron-left.toggle-ui-on,
 .icn-locked.toggle-ui-on {
   opacity: 0.2;
   transition: 5s opacity 1.25s ease-in;

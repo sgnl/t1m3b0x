@@ -229,21 +229,26 @@
 ;        "+"]]
     ])
 
+(defn button_partial
+  [className handler]
+  [:div
+      {:class className
+       :on-click (fn [e]
+                   (.preventDefault e)
+                   (.stopPropagation e)
+                   (handler))}])
+
 (defn config_button
   []
-  [:div.icn-cog
-      {:on-click (fn [e]
-        (.preventDefault e)
-        (.stopPropagation e)
-        (secretary/dispatch! "/config"))}])
+  (button_partial
+    "icn-cog"
+    #(secretary/dispatch! "/config")))
 
 (defn back_button
   []
-  [:div.icn-chevron-left
-      {:on-click (fn [e]
-        (.preventDefault e)
-        (.stopPropagation e)
-        (secretary/dispatch! "/"))}])
+  (button_partial
+    "icn-chevron-left"
+    #(secretary/dispatch! "/")))
 
 ;
 ; PARTIALS

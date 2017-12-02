@@ -13,9 +13,7 @@ Click on it to start the timer:
 
 ![Alt text](docs/pomodoro_ex_002.gif?raw=true "Click to start the timer")
 
-go do stuff, timer displays the progress in minimal way (background color fill).
-
-text will appear if you wait a second.
+go do stuff, in other windows, switch back to t1m3box and get information about your timer via how much color is left in the box and the timer text will appear if you continue to keep the window in focus
 
 ![Alt text](docs/pomodoro_ex_003.gif?raw=true "...Time doesn't wait for me... - Dillinger Four, 'Gainsville'")
 

@@ -9,10 +9,10 @@
 
 (defn init-browser []
   (reset! main-window (browser-window.
-                        (clj->js {:minWidth 220
-                                  :minHeight 220
-                                  :width 220
-                                  :height 220
+                        (clj->js {:minWidth 250
+                                  :minHeight 250
+                                  :width 250
+                                  :height 250
                                   :frame false
                                   :alwaysOnTop false
                                   :resizable true})))

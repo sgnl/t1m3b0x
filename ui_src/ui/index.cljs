@@ -255,14 +255,7 @@
    [config_button]
    [toggle-interface-interaction]])
 
-
-(defn footer-locked
-  []
-  [:footer
-    [config_button]
-    [toggle-interface-interaction]])
-
-(defn footer-config
+(defn ^:export footer-config
   []
   [:footer
     [back_button]
@@ -276,18 +269,15 @@
   []
   [:div.root
     {:on-click toggle-timer}
-    ; [:canvas#circle-progress
-    ;  {:width 220
-    ;   :height 220
-    ;   :data-progress-amount (calculate-percentage)}]
     [visor]
     [interval-panel]
-    [footer-timer]])
+    [footer-timer]
+    ])
 
 (defn ^:export config
   []
   [:div.root
    [visor]
-   ;[:h1.panel-name "config"]
    [config-panel]
-   [footer-config]])
+   [footer-config]
+   ])

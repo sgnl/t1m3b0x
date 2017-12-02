@@ -23,8 +23,8 @@
 ; CrashReporter can just be omitted
 (.start crash-reporter
         (clj->js
-          {:companyName "MyAwesomeCompany"
-           :productName "MyAwesomeApp"
+          {:companyName "Meat Popsicle "
+           :productName "t1m3b0x"
            :submitURL "https://example.com/submit-url"
            :autoSubmit false}))
 

@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "electron-packager": "^9.1.0",
+    "electron": "^1.7.9",
     "electron-prebuilt": "^1.4.13"
   },
   "devDependencies": {
     "asar": "^0.14.0",
-    "electron": "1.7.9",
     "rimraf": "^2.6.2"
   }
 }

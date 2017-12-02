@@ -29,7 +29,7 @@
                 :output-dir "resources/public/js/electron-dev"
                 :optimizations :simple
                 :pretty-print true
-                :cache-analysis true}}
+                :cache-analysis false}}
     {:source-paths ["ui_src" "dev_src"]
      :id "frontend-dev"
      :compiler {:output-to "resources/public/js/ui-core.js"

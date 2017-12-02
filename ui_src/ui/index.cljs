@@ -94,10 +94,7 @@
      :on-click (fn [e]
                  (.preventDefault e)
                  (.stopPropagation e)
-                 (swap! interface_is_locked not)
-                 (if (= @interface_is_locked true)
-                   (do (secretary/dispatch! "/locked"))
-                   (do (secretary/dispatch! "/"))))}])
+                 (swap! interface_is_locked not))}])
 
 (defn toggle-timer
   [e]
@@ -232,6 +229,22 @@
 ;        "+"]]
     ])
 
+(defn config_button
+  []
+  [:div.icn-cog
+      {:on-click (fn [e]
+        (.preventDefault e)
+        (.stopPropagation e)
+        (secretary/dispatch! "/config"))}])
+
+(defn back_button
+  []
+  [:div.icn-chevron-left
+      {:on-click (fn [e]
+        (.preventDefault e)
+        (.stopPropagation e)
+        (secretary/dispatch! "/"))}])
+
 ;
 ; PARTIALS
 ;
@@ -239,31 +252,20 @@
 (defn footer-timer
   []
   [:footer
-   [:div.icn-cog
-      {:on-click (fn [e]
-        (.preventDefault e)
-        (.stopPropagation e)
-        (secretary/dispatch! "/config"))}]
+   [config_button]
    [toggle-interface-interaction]])
+
 
 (defn footer-locked
   []
   [:footer
-    [:div.icn-cog
-      {:on-click (fn [e]
-        (.preventDefault e)
-        (.stopPropagation e)
-        (secretary/dispatch! "/config"))}]
+    [config_button]
     [toggle-interface-interaction]])
 
 (defn footer-config
   []
   [:footer
-    [:div.icn-chevron-left
-      {:on-click (fn [e]
-        (.preventDefault e)
-        (.stopPropagation e)
-        (secretary/dispatch! "/"))}]
+    [back_button]
     [toggle-interface-interaction]])
 
 ;
@@ -281,14 +283,6 @@
     [visor]
     [interval-panel]
     [footer-timer]])
-
-(defn ^:export locked
-  []
-  [:div.root
-    [visor]
-    ;[:h1.panel-name "locked"]
-    [interval-panel]
-    [footer-locked]])
 
 (defn ^:export config
   []

@@ -1,6 +1,6 @@
 {
   "name": "t1m3b0x",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "resources/main.js",
   "scripts": {
     "build:pre": "lein do clean, cljsbuild once frontend-release, cljsbuild once electron-release",

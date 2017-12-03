@@ -4,6 +4,17 @@
 
 > We are Samaurai. The Keyboard Cowboys. - Eugene "The Plague" Belford
 
+## changelog
+
+1.1
+added breaks! Now when an interval completes you will be pathed to the break view where you can start a break timer
+
+pre 1.1 features
+interval timer with configuration
+background color random selector
+lock GUI from interactions and make draggable
+Re-sizeable (with minimum size restrictions)
+
 ## How to use
 Open the app you will see:
 

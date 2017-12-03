@@ -27,7 +27,7 @@
 (def app-state
   (atom
     {:interface_is_locked false
-     :duration 1499
+     :duration 0
      :break_time_lasped 0
      :interval_process nil
      :break_process nil
@@ -143,7 +143,7 @@
   (swap! timer_is_active not))
 
 (defn visor
-  []
+  [duration interval_duration]
   [:div.visor
    {:class
       (when (= @timer_is_active true)
@@ -156,7 +156,7 @@
           (reset! random_background false)
         (str "active" " " (str "visor--" @active_theme_name)))
     :style
-      {:top (str (calculate-percentage @duration @interval_duration) "%")}}])
+      {:top (str (calculate-percentage duration interval_duration) "%")}}])
 
 (defn draggable-area
   []
@@ -223,6 +223,14 @@
        [:p.label-value (str (get-minutes @interval_duration) "mins")]]
       (click_event_partial "button symbol" #(increase-interval-duration) "+")]
 
+
+    [:div.break-settings
+     (click_event_partial "button symbol" #(decrease-break-duration) "-")
+      [:div.label-and-value-group
+       [:p.label "BREAK"]
+       [:p.label-value (str (get-minutes @break_duration) "mins")]]
+      (click_event_partial "button symbol" #(increase-break-duration) "+")]
+
     [:div.button.rng-bg
       {:on-click
         (fn [e]
@@ -235,13 +243,6 @@
            (.stopPropagation e)
            )}
       "random bg"]
-
-    [:div.break-settings
-     (click_event_partial "button symbol" #(decrease-break-duration) "-")
-      [:div.label-and-value-group
-       [:p.label "BREAK"]
-       [:p.label-value (str (get-minutes @break_duration) "mins")]]
-      (click_event_partial "button symbol" #(increase-break-duration) "+")]
 
     [:div.volume
      [:label.button.icn-bullhorn
@@ -265,6 +266,7 @@
            (.stopPropagation e)
            (reset! sound_alert_volume (/ (.-value (.-target e)) 100))
            )}]]
+
 ;    [:div.interval-settings
 ;      [:div.button.symbol
 ;        {:on-click
@@ -309,6 +311,20 @@
     #(secretary/dispatch! "/")
     nil))
 
+(defn break_button
+  []
+  (click_event_partial
+    "icn-electric"
+    #(secretary/dispatch! "/break")
+    nil))
+
+(defn interval_button
+  []
+  (click_event_partial
+    "icn-timer"
+    #(secretary/dispatch! "/")
+    nil))
+
 ;
 ; PARTIALS
 ;
@@ -317,6 +333,8 @@
   []
   [:footer
    [config_button]
+   [break_button]
+   [interval_button]
    [toggle-interface-interaction]])
 
 (defn ^:export footer-config
@@ -333,7 +351,7 @@
   []
   [:div.root
     {:on-click toggle-timer}
-    [visor]
+    [visor @duration @interval_duration]
     [interval-panel]
     [footer-timer]
     ])
@@ -343,14 +361,14 @@
   [:div.root
    [visor]
    [config-panel]
-   [footer-config]
+   [footer-timer]
    ])
 
 (defn ^:export break
   []
   [:div.root
     {:on-click toggle_break_timer}
-    [visor]
+    [visor @break_time_lasped @break_duration]
     [break-panel]
-    [footer-config]
+    [footer-timer]
     ])

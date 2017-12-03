@@ -12,7 +12,7 @@
                         (clj->js {:minWidth 250
                                   :minHeight 250
                                   :width 250
-                                  :height 250
+                                  :height 275
                                   :frame false
                                   :alwaysOnTop false
                                   :resizable true})))

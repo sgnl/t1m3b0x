@@ -10,6 +10,7 @@
   (local-storage
     (atom
       {:interval_duration 1500
+       :break_duration 1500
        :active_theme_name "neon-sky"
        :random_background false
        :sound_alert_path "audio/lick_my_balls.wav"
@@ -17,6 +18,7 @@
        })
     :local-storage))
 (def interval_duration (reagent/cursor local-state [:interval_duration]))
+(def break_duration (reagent/cursor local-state [:break_duration]))
 (def active_theme_name (reagent/cursor local-state [:active_theme_name]))
 (def random_background (reagent/cursor local-state [:random_background]))
 (def sound_alert_path (reagent/cursor local-state [:sound_alert_path]))
@@ -25,13 +27,17 @@
 (def app-state
   (atom
     {:interface_is_locked false
-     :duration 0
+     :duration 1499
+     :break_time_lasped 0
      :interval_process nil
+     :break_process nil
      :timer_is_active false
      :timer_is_paused false
      :available_themes ["neon-sky" "only-dreams" "pacific-high", "twitch" "michiko" "monte-carlo"]}))
 (def duration (reagent/cursor app-state [:duration]))
+(def break_time_lasped (reagent/cursor app-state [:break_time_lasped]))
 (def interval_process (reagent/cursor app-state [:interval_process]))
+(def break_process (reagent/cursor app-state [:break_process]))
 (def timer_is_active (reagent/cursor app-state [:timer_is_active]))
 (def timer_is_paused (reagent/cursor app-state [:timer_is_paused]))
 (def available_themes (reagent/cursor app-state [:available_themes]))
@@ -46,7 +52,7 @@
 (defn- str->int [s]
   #(js/parseInt s))
 
-(defn calculate-percentage [] (.floor js/Math (* (/ @duration @interval_duration) 100)))
+(defn calculate-percentage [duration interval_duration] (.floor js/Math (* (/ duration interval_duration) 100)))
 
 (defn get-seconds [duration] (mod duration 60))
 (defn get-minutes [duration] (.floor js/Math (/ duration 60)))
@@ -70,6 +76,11 @@
   (.clearInterval js/window @interval_process)
   (reset! duration 0))
 
+(defn stop_break_timer
+  []
+  (.clearInterval js/window @break_process)
+  (reset! break_time_lasped 0))
+
 (defn start-timer
   []
   (swap! interval_process
@@ -81,7 +92,20 @@
         (swap! timer_is_active not)
         (when (= @interface_is_locked true)
           (swap! interface_is_locked not))
-        (show-notification "t1m3b0x" "interval complete")))
+        (show-notification "t1m3b0x" "interval complete")
+        (secretary/dispatch! "/break")))
+    1000)))
+
+(defn start_break_timer
+  []
+  (swap! break_process
+    #(.setInterval js/window (fn []
+      (if (= @timer_is_paused false)
+        (swap! break_time_lasped inc))
+      (when (> @break_time_lasped @break_duration)
+        (stop_break_timer)
+        (show-notification "t1m3b0x" "break complete")
+        (secretary/dispatch! "/")))
     1000)))
 
 (defn toggle-interface-interaction
@@ -107,6 +131,17 @@
       (stop-timer)))
   (swap! timer_is_active not))
 
+(defn toggle_break_timer
+  [e]
+  (.preventDefault e)
+  (.log js/console "wut")
+  (if (= @timer_is_active false)
+    (do
+      (start_break_timer))
+    (do
+      (stop_break_timer)))
+  (swap! timer_is_active not))
+
 (defn visor
   []
   [:div.visor
@@ -121,7 +156,7 @@
           (reset! random_background false)
         (str "active" " " (str "visor--" @active_theme_name)))
     :style
-      {:top (str (calculate-percentage) "%")}}])
+      {:top (str (calculate-percentage @duration @interval_duration) "%")}}])
 
 (defn draggable-area
   []
@@ -142,6 +177,27 @@
   (when (< @interval_duration 3600)
     (swap! interval_duration #(+ @interval_duration 60))))
 
+(defn decrease-break-duration
+  []
+  (when (> @break_duration 60)
+    (swap! break_duration #(- @break_duration 60))))
+
+(defn increase-break-duration
+  []
+  (when (< @break_duration 3600)
+    (swap! break_duration #(+ @break_duration 60))))
+
+(defn click_event_partial
+  [className handler text]
+  [:div
+      {:class className
+       :on-click (fn [e]
+                   (.preventDefault e)
+                   (.stopPropagation e)
+                   (handler))}
+   (when (not-empty text)
+     text)])
+
 (defn interval-panel
   []
   [:section.ui
@@ -153,30 +209,20 @@
       [:span.smaller-text "s"]]
 
     [:h2.percentage
-      [:span (calculate-percentage)]
+      [:span (calculate-percentage @duration @interval_duration)]
       [:span.smaller-text "%"]]])
 
 (defn config-panel
   []
   [:div.config-panel
+
     [:div.interval-settings
-      [:div.button.symbol
-        {:on-click
-          (fn [e]
-            (.preventDefault e)
-            (.stopPropagation e)
-            (decrease-interval-duration))}
-        "-"]
+      (click_event_partial "button symbol" #(decrease-interval-duration) "-")
       [:div.label-and-value-group
        [:p.label "INTERVAL"]
        [:p.label-value (str (get-minutes @interval_duration) "mins")]]
-      [:div.button.symbol
-        {:on-click
-          (fn [e]
-            (.preventDefault e)
-            (.stopPropagation e)
-            (increase-interval-duration))}
-        "+"]]
+      (click_event_partial "button symbol" #(increase-interval-duration) "+")]
+
     [:div.button.rng-bg
       {:on-click
         (fn [e]
@@ -189,6 +235,14 @@
            (.stopPropagation e)
            )}
       "random bg"]
+
+    [:div.break-settings
+     (click_event_partial "button symbol" #(decrease-break-duration) "-")
+      [:div.label-and-value-group
+       [:p.label "BREAK"]
+       [:p.label-value (str (get-minutes @break_duration) "mins")]]
+      (click_event_partial "button symbol" #(increase-break-duration) "+")]
+
     [:div.volume
      [:label.button.icn-bullhorn
       [:input.input-alert-file
@@ -203,13 +257,13 @@
      [:input.bullhorn-slider
       {:type "range"
        :min 0
-       :max 10
-       :value (* @sound_alert_volume 10)
+       :max 100
+       :value (* @sound_alert_volume 100)
        :on-change
          (fn [e]
            (.preventDefault e)
            (.stopPropagation e)
-           (reset! sound_alert_volume (/ (.-value (.-target e)) 10))
+           (reset! sound_alert_volume (/ (.-value (.-target e)) 100))
            )}]]
 ;    [:div.interval-settings
 ;      [:div.button.symbol
@@ -229,26 +283,31 @@
 ;        "+"]]
     ])
 
-(defn button_partial
-  [className handler]
-  [:div
-      {:class className
-       :on-click (fn [e]
-                   (.preventDefault e)
-                   (.stopPropagation e)
-                   (handler))}])
+(defn break-panel
+  []
+  [:section.ui.break-panel
+    [draggable-area]
+    [:h1 "break"]
+    [:h2.time
+      [:span (get-minutes @break_time_lasped)]
+      [:span.smaller-text "m "]
+      [:span (get-seconds @break_time_lasped)]
+      [:span.smaller-text "s"]]
+    ])
 
 (defn config_button
   []
-  (button_partial
+  (click_event_partial
     "icn-cog"
-    #(secretary/dispatch! "/config")))
+    #(secretary/dispatch! "/config")
+    nil))
 
 (defn back_button
   []
-  (button_partial
+  (click_event_partial
     "icn-chevron-left"
-    #(secretary/dispatch! "/")))
+    #(secretary/dispatch! "/")
+    nil))
 
 ;
 ; PARTIALS
@@ -286,3 +345,12 @@
    [config-panel]
    [footer-config]
    ])
+
+(defn ^:export break
+  []
+  [:div.root
+    {:on-click toggle_break_timer}
+    [visor]
+    [break-panel]
+    [footer-config]
+    ])

@@ -2,7 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]
                    [secretary.core :refer [defroute]])
   (:import goog.History)
-  (:require [ui.index :as index :refer [timer config]]
+  (:require [ui.index :as index :refer [timer config break]]
             [reagent.core :as reagent :refer [atom]]
             [ui.document-ready :as dom-ready :refer [init]]
             [goog.events :as events]
@@ -30,6 +30,9 @@
   (defroute "/" []
     (swap! app-state assoc :page :timer))
 
+  (defroute "/break" []
+    (swap! app-state assoc :page :break))
+
   (defroute "/config" []
     (swap! app-state assoc :page :config))
 
@@ -40,6 +43,8 @@
   [timer])
 (defmethod current-page :config []
   [config])
+(defmethod current-page :break []
+  [break])
 (defmethod current-page :default []
   [:h1 "DEFAULT PAGE"])
 
